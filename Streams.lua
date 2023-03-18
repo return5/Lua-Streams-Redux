@@ -1,6 +1,5 @@
 
 local setmetatable <const> = setmetatable
-local io <const> = io
 local pairs <const> = pairs
 local concat <const> = table.concat
 
@@ -74,10 +73,10 @@ function Streams:map(func)
 	return addOperation(self,mapFunc)
 end
 
-function Streams:distinct(getData)
+function Streams:distinct(keyFunc)
 	local distinct <const> = {}
-	local keyFunc <const> = getData or function(a) return a end
-	local distinctFunc <const> = function(stream,a,b) local data <const> = keyFunc(a,b); if not distinct[data] then distinct[data] = true; return a,b else stream.oPCont = false; return a,b end end
+	local keyFunction <const> = keyFunc or function(a) return a end
+	local distinctFunc <const> = function(stream,a,b) local data <const> = keyFunction(a,b); if not distinct[data] then distinct[data] = true; return a,b else stream.oPCont = false; return a,b end end
 	return addOperation(self,distinctFunc)
 end
 
@@ -154,10 +153,11 @@ function Streams:asLinkedList(linkedList)
 	return setAndRunTerminator(self,func)
 end
 
-function Streams:asSet()
+function Streams:asSet(comparator)
 	self.returnFunction = returnValueFunc
 	self.returnValue = {}
-	local func <const> = function(stream,data) stream.returnValue[data] = true; return data end
+	local cmpFunc <const> = comparator or function(set,data) return set[data]  end
+	local func <const> = function(stream,data) if not cmpFunc(stream.returnValue,data) then stream.returnValue[data] = true; end return data end
 	return setAndRunTerminator(self,func)
 end
 
@@ -217,24 +217,6 @@ end
 
 function Streams:execute()
 	return loopStream(self,function(value,stream) return stream:loopOperations(value) end,function(stream,i) return stream.data[i] end)
-end
-
-function Streams:dictionaryStream(data)
-	return setmetatable(Streams:new(data),DictionaryStream)
-end
-
-function Streams:setStream(data)
-	return setmetatable(Streams:new(data),SetStream)
-end
-
-function Streams:intRange(start,stop)
-	return setmetatable(Streams:new(nil,start,stop),IntStream)
-end
-
-function Streams:linkedListStream(dataRange,getData)
-	local o <const> =  setmetatable(Streams:new(dataRange),LinkedListStream)
-	o.getData = getData
-	return o
 end
 
 local function addNewNode(list,item)
@@ -349,6 +331,12 @@ function DictionaryStream:copyOf()
 	return o
 end
 
+function SetStream:copyOf()
+	local o <const> = Streams:SetStream(self.data)
+	copyOperations(o,self)
+	return o
+end
+
 function IntStream:copyOf()
 	local o <const> = Streams:intRange(self.start,self.limit)
 	copyOperations(o,self)
@@ -364,6 +352,24 @@ end
 function Streams:copyOf()
 	local o <const> = Streams:new(self.data,self.start,self.limit)
 	copyOperations(o,self)
+	return o
+end
+
+function Streams:dictionaryStream(data)
+	return setmetatable(Streams:new(data),DictionaryStream)
+end
+
+function Streams:setStream(data)
+	return setmetatable(Streams:new(data),SetStream)
+end
+
+function Streams:intRange(start,stop)
+	return setmetatable(Streams:new(nil,start,stop),IntStream)
+end
+
+function Streams:linkedListStream(linkedList,getData)
+	local o <const> =  setmetatable(Streams:new(linkedList),LinkedListStream)
+	o.getData = getData
 	return o
 end
 
