@@ -98,14 +98,14 @@ function Streams:distinct(keyFunc)
 	return addOperation(self,distinctFunc)
 end
 
-local function LinkedListLoop(list,func)
-	local temp = list.data.head
-	local getItem <const> = temp.getData and temp.getData or list.getData
-	while temp and not list.terminate do
-		func(getItem(temp),list)
+local function LinkedListLoop(stream,func)
+	local temp = stream.data.head
+	local getItem <const> = temp.getData or stream.data.getData
+	while temp and not stream.terminate do
+		func(getItem(temp),stream)
 		temp = temp.next
 	end
-	return list:returnFunction()
+	return stream:returnFunction()
 end
 
 local function loopStream(stream,func,getData)
