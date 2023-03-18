@@ -1,24 +1,24 @@
-A simple and simplistic mimicry of java 8 streams implemented as a lua module.  
+A lua module which attempts to implement a simple and simplistic mimicry of java 8 streams. 
 see 'examples.lua' for some examples of use.  
 
 ## API
 ### constructors
  - Streams:dictionaryStream(data)
-   - create a stream from a table used as a dictionary
+   - create a stream from a key/value table.
  - Streams:setStream(data)
-   - create a stream from a table used as a set
+   - create a stream from a table used as a set.
  - Streams:intRange(start,stop)
    - create a stream consisting of all integers from start to stop. range is inclusive.
  - Streams:linkedListStream(linkedList,[getData])
    - create a stream from a linked list.
      - the linkedlsit used must have a 'next' field which points to the next node
-     - must also have a getData method to extract data form node.
-   - ```getData``` needs to be provided if linkedlist implementation doesn't provide the function
-     - function must take in node and return data in that node. ```getData(node) return data from node```
+     - must also have a getData method to extract data from node.
+   - ```getData``` needs to be provided if linked list implementation doesn't provide the function
+     - getData must take in node and return data in that node. ```getData(node) return data from node```
  - Streams:new(dataRange,[start],[limit])
    - return new stream from table used as array.
      - ```start``` is optional start index. Default is 1
-     - ```stop``` is index to stop stram at. default is #dataRange
+     - ```stop``` is optional index to stop stream at. default is #dataRange
   
 ### intermediate operators
  - Streams:filter(func)
