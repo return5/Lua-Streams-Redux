@@ -22,38 +22,38 @@ see 'examples.lua' for some examples of use.
   
 ### intermediate operators
  - Streams:filter(func)
-   - filter stream items. 
-     - ```func``` should take in stream item and return true or false. only stream items which return true will pass to next stage.
+   - filter stream elements. 
+     - ```func``` should take in stream element and return true or false. only stream elements which return true will pass to next stage.
  - Streams:map(func)
-   - takes stream items and maps them to a different value or item.
-     - ```func``` should take in a stream item and return a value which will then be passed to next stage in pipeline.
+   - takes stream elements and maps them to a different value or item.
+     - ```func``` should take in a stream element and return a value which will then be passed to next stage in pipeline.
  - Streams:distinct([keyFunc])
    - will restrict pipeline to only distinct elements. 
-     - ``keyFunc`` should take in stream items and return a unique value. this value determines if entire object is distinct from other stream items. Default is to use the stream item itself.
+     - ``keyFunc`` should take in stream elements and return a unique value. this value determines if entire object is distinct from other stream elements. Default is to use the stream element itself.
   
 ### terminating operators
  - Streams:concatStr([sep],[getStr])
    - concats stream into a single string.
-     - ```sep``` separator for each stream item in string. defaults to none.
+     - ```sep``` separator for each stream element in string. defaults to none.
      - ```getStr``` function to take in string item and return a string representation of that item. defaults to using the item itself.
  - Streams:count()
    - returns a count of all elements which pass through to the end of the pipeline.
  - Streams:asMap(keyFunc,valueFunc)
    - returns stream elements in a key/value table. ```tbl[key] = value```
-     - ```keyFunc``` function to take in stream items and return a key.
-     - ```valueFunc``` function to take in stream items and return a value.
+     - ```keyFunc``` function to take in stream elements and return a key.
+     - ```valueFunc``` function to take in stream elements and return a value.
  - Streams:asLinkedList([linkedList])
-   - returns stream items as a Linked list. if no implementation is provided then the internal Linked List class is used. please see [linked list docs](#internal-linkedlist)
+   - returns stream elements as a Linked list. if no implementation is provided then the internal Linked List class is used. please see [linked list docs](#internal-linkedlist)
      - ```linkedList``` user provided Linked List class
        - class must implement a constructor as 'new' ```linkedList:new()```
        - class must implement an add function to add items to list ```list:add(item)```
  - Streams:asSet([comparator])
-   - returns set consisting of stream items
+   - returns set consisting of stream elements
      - ```comparator``` function to check for distinctness. should return true if set contains the item already. Otherwise, return false. ```comparator(list,data) return true/false ```
  - Streams:asArray()
-   - returns stream items as an array
+   - returns stream elements as an array
  - Streams:findFirst()
-   - returns the very first stream item which reaches end of pipeline.
+   - returns the very first stream element which reaches end of pipeline.
  - Streams:anyMatch(func)
    - returns true if any stream element causes 'func' to return true.
      - ```func``` function takes in stream element and returns true/false.
@@ -62,11 +62,11 @@ see 'examples.lua' for some examples of use.
      - ```func``` function which takes in stream element and returns true/false.
  - Streams:reduce(func,initialVal)
    - reduce stream elements down to a single item using an associative function on each item and result of previous call to 'func'
-     - ```func``` associative function which takes in accumulated results and stream item. returns a single value to use as new results value. ```results = func(results,item) return value```
+     - ```func``` associative function which takes in accumulated results and stream element. returns a single value to use as new results value. ```results = func(results,item) return value```
      - ```intialVal``` the initial value to use for the results.
  - Streams:forEach(func)
    - run 'func' on each stream element.
-     - ```func``` function takes in stream item. expects no return value  ```func(element) do stuff here  end```
+     - ```func``` function takes in stream element. expects no return value  ```func(element) do stuff here  end```
 
 ### convenience functions
  - DictionaryStream:copyOf()
