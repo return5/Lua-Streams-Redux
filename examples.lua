@@ -5,7 +5,7 @@ local function main()
 	--find first item which passes. we filter stream to only have values less than five. we then map the stream to multiple elements by 2. finally we find the first item in stream to finsih the pipeline.
 	local findFirst <const> = Streams:new(numTbl):filter(function(i) return i < 5  end):map(function(i) return i * 2 end):findFirst()
 	--in our exxample, 4 is the first element which is less than 5. it is multiplied by 2 to equal 8. it should be the element returned by findFirst.
-	io.write("does find first equals 8 ? ",tostring(findFirst == 4),"\n")
+	io.write("does find first equals 8 ? ",tostring(findFirst == 8),"\n")
 
 	--lets reduce all the items in numTbl by summing them together
 	local sum <const> = Streams:new(numTbl):reduce(function(results,i) return results + i  end,0)
