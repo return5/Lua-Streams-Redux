@@ -11,7 +11,7 @@ see 'examples.lua' for some examples of use.
    - create a stream consisting of all integers from start to stop. range is inclusive.
  - Streams:linkedListStream(linkedList,[getData])
    - create a stream from a linked list.
-     - the linkedlsit used must have a 'next' field which points to the next node
+     - the Nodes used by the linkedlsit must have a 'next' field which points to the next node
      - must also have a getData method to extract data from node.
    - ```getData``` needs to be provided if linked list implementation doesn't provide the function
      - getData must take in node and return data in that node. ```getData(node) return data from node```
